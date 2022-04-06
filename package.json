@@ -1,0 +1,12 @@
+{
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1"
+  }
+}
