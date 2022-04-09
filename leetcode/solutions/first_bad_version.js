@@ -1,3 +1,9 @@
+//leetcode.com/problems/first-bad-version/
+// https://leetcode.com/submissions/detail/677124737/
+// Runtime: 93 ms, faster than 31.11% of JavaScript online submissions for First Bad Version.
+// Memory Usage: 41.8 MB, less than 73.63% of JavaScript online submissions for First Bad Version.
+// O(log n) time, O(1) space where n === no. of versions
+
 /**
  * Definition for isBadVersion()
  *
@@ -12,7 +18,7 @@
  * @param {function} isBadVersion()
  * @return {function}
  */
-var solution = function (isBadVersion) {
+https: var solution = function (isBadVersion) {
   /**
    * @param {integer} n Total versions
    * @return {integer} The first bad version
