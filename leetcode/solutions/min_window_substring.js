@@ -20,8 +20,9 @@ const minWindow = function (s, t) {
   const queueStart = [];
   const queueEnd = [];
   let len = 0;
-  let bound;
   let leftQPointer = 0;
+  let startIdx = -Infinity;
+  let endIdx = Infinity;
 
   for (let i = 0; i < s.length; i++) {
     const letter = s[i];
@@ -30,40 +31,32 @@ const minWindow = function (s, t) {
     memoS[letter] = memoS[letter] ? memoS[letter] + 1 : 1;
     queueEnd.push(i);
     if (memoS[letter] <= memoT[letter]) len++;
-    if (bound === undefined && len === t.length) bound = queueEnd.length - 1;
 
     let leftQLetter = s[queueEnd[leftQPointer]];
     if (memoS[letter] <= memoT[letter] || letter !== leftQLetter) {
       queueStart.push(queueEnd[leftQPointer]);
-      continue;
+    } else {
+      while (
+        leftQPointer < queueEnd.length - 1 &&
+        memoS[leftQLetter] > memoT[leftQLetter]
+      ) {
+        leftQPointer++;
+        memoS[leftQLetter]--;
+        leftQLetter = s[queueEnd[leftQPointer]];
+      }
+
+      queueStart.push(queueEnd[leftQPointer]);
     }
 
-    while (
-      leftQPointer < queueEnd.length - 1 &&
-      memoS[leftQLetter] > memoT[leftQLetter]
-    ) {
-      leftQPointer++;
-      memoS[leftQLetter]--;
-      leftQLetter = s[queueEnd[leftQPointer]];
-    }
-
-    queueStart.push(queueEnd[leftQPointer]);
-  }
-
-  if (bound === undefined) return "";
-
-  let startIdx, endIdx;
-  for (let i = bound; i < queueEnd.length; i++) {
-    const currentLen = queueEnd[i] - queueStart[i] + 1;
-    if (currentLen < t.length) continue;
+    if (len < t.length) continue;
     if (
-      (startIdx === undefined && endIdx === undefined) ||
-      currentLen < endIdx - startIdx + 1
+      queueEnd[queueEnd.length - 1] - queueStart[queueStart.length - 1] <
+      endIdx - startIdx
     ) {
-      startIdx = queueStart[i];
-      endIdx = queueEnd[i];
+      startIdx = queueStart[queueStart.length - 1];
+      endIdx = queueEnd[queueEnd.length - 1];
     }
   }
 
-  return s.slice(startIdx, endIdx + 1);
+  return endIdx === Infinity ? "" : s.slice(startIdx, endIdx + 1);
 };
